@@ -11,38 +11,38 @@ namespace AT_C_Sharp.AT.Exercise10
         public static void Run()
         {
             Random random = new Random();
-            int numeroSecreto = random.Next(1, 51);
-            int tentativasRestantes = 5;
+            int secretNumber = random.Next(1, 51);
+            int remainingAttempts = 5;
 
             Console.WriteLine("Bem-vindo ao Jogo de Adivinhação!");
             Console.WriteLine("Tente adivinhar um número entre 1 e 50. Você tem 5 tentativas.");
 
-            while (tentativasRestantes > 0)
+            while (remainingAttempts > 0)
             {
-                Console.Write($"\nTentativas restantes: {tentativasRestantes}. Digite seu palpite: ");
+                Console.Write($"\nTentativas restantes: {remainingAttempts}. Digite seu palpite: ");
                 try
                 {
                     string? input = Console.ReadLine();
-                    if (!int.TryParse(input, out int palpite))
+                    if (!int.TryParse(input, out int guess))
                     {
                         Console.WriteLine("Erro: Digite um número válido!");
                         continue;
                     }
 
-                    if (palpite < 1 || palpite > 50)
+                    if (guess < 1 || guess > 50)
                     {
                         Console.WriteLine("Erro: O número deve estar entre 1 e 50!");
                         continue;
                     }
 
-                    tentativasRestantes--;
+                    remainingAttempts--;
 
-                    if (palpite == numeroSecreto)
+                    if (guess == secretNumber)
                     {
-                        Console.WriteLine($"Parabéns! Você acertou o número {numeroSecreto}!");
+                        Console.WriteLine($"Parabéns! Você acertou o número {secretNumber}!");
                         return;
                     }
-                    else if (palpite < numeroSecreto)
+                    else if (guess < secretNumber)
                     {
                         Console.WriteLine("Dica: O número secreto é maior!");
                     }
@@ -58,7 +58,7 @@ namespace AT_C_Sharp.AT.Exercise10
                 }
             }
 
-            Console.WriteLine($"\nGame Over! O número secreto era {numeroSecreto}.");
+            Console.WriteLine($"\nGame Over! O número secreto era {secretNumber}.");
         }
     }
 }

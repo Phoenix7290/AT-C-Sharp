@@ -10,89 +10,88 @@ using System.IO;
 
 namespace AT_C_Sharp.AT.Exercise12
 {
-
-    public class Contato
+    public class Contact
     {
-        public string Nome { get; set; }
-        public string Telefone { get; set; }
+        public string Name { get; set; }
+        public string PhoneNumber { get; set; }
         public string Email { get; set; }
 
-        public Contato(string nome, string telefone, string email)
+        public Contact(string name, string phoneNumber, string email)
         {
-            Nome = nome;
-            Telefone = telefone;
+            Name = name;
+            PhoneNumber = phoneNumber;
             Email = email;
         }
 
         public string ToFileFormat()
         {
-            return $"{Nome},{Telefone},{Email}";
+            return $"{Name},{PhoneNumber},{Email}";
         }
     }
 
-    public abstract class ContatoFormatter
+    public abstract class ContactFormatter
     {
-        public abstract void ExibirContatos(List<Contato> contatos);
+        public abstract void DisplayContacts(List<Contact> contacts);
     }
 
-    public class MarkdownFormatter : ContatoFormatter
+    public class MarkdownFormatter : ContactFormatter
     {
-        public override void ExibirContatos(List<Contato> contatos)
+        public override void DisplayContacts(List<Contact> contacts)
         {
             Console.WriteLine("## Lista de Contatos\n");
-            foreach (var contato in contatos)
+            foreach (var contact in contacts)
             {
-                Console.WriteLine($"- **Nome:** {contato.Nome}");
-                Console.WriteLine($"- 📞 Telefone: {contato.Telefone}");
-                Console.WriteLine($"- 📧 Email: {contato.Email}\n");
+                Console.WriteLine($"- **Nome:** {contact.Name}");
+                Console.WriteLine($"- 📞 Telefone: {contact.PhoneNumber}");
+                Console.WriteLine($"- 📧 Email: {contact.Email}\n");
             }
         }
     }
 
-    public class TabelaFormatter : ContatoFormatter
+    public class TableFormatter : ContactFormatter
     {
-        public override void ExibirContatos(List<Contato> contatos)
+        public override void DisplayContacts(List<Contact> contacts)
         {
             Console.WriteLine("----------------------------------------");
             Console.WriteLine("| Nome           | Telefone      | Email          |");
             Console.WriteLine("----------------------------------------");
-            foreach (var contato in contatos)
+            foreach (var contact in contacts)
             {
-                Console.WriteLine($"| {contato.Nome,-14} | {contato.Telefone,-13} | {contato.Email,-14} |");
+                Console.WriteLine($"| {contact.Name,-14} | {contact.PhoneNumber,-13} | {contact.Email,-14} |");
             }
             Console.WriteLine("----------------------------------------");
         }
     }
 
-    public class RawTextFormatter : ContatoFormatter
+    public class RawTextFormatter : ContactFormatter
     {
-        public override void ExibirContatos(List<Contato> contatos)
+        public override void DisplayContacts(List<Contact> contacts)
         {
-            foreach (var contato in contatos)
+            foreach (var contact in contacts)
             {
-                Console.WriteLine($"Nome: {contato.Nome} | Telefone: {contato.Telefone} | Email: {contato.Email}");
+                Console.WriteLine($"Nome: {contact.Name} | Telefone: {contact.PhoneNumber} | Email: {contact.Email}");
             }
         }
     }
 
     public class Exercise
     {
-        private const string FilePath = "contatos.txt"; 
+        private const string FilePath = "contatos.txt";
 
         public static void Run()
         {
             while (true)
             {
-                ExibirMenu();
-                string? opcao = Console.ReadLine();
+                DisplayMenu();
+                string? option = Console.ReadLine();
 
-                switch (opcao)
+                switch (option)
                 {
                     case "1":
-                        CadastrarContato();
+                        RegisterContact();
                         break;
                     case "2":
-                        ListarContatos();
+                        ListContacts();
                         break;
                     case "3":
                         Console.WriteLine("Encerrando o programa...");
@@ -104,7 +103,8 @@ namespace AT_C_Sharp.AT.Exercise12
                 Console.WriteLine();
             }
         }
-        private static void ExibirMenu()
+
+        private static void DisplayMenu()
         {
             Console.WriteLine("=== Sistema de Gerenciamento de Contatos ===");
             Console.WriteLine("1 - Cadastrar Contato");
@@ -112,19 +112,20 @@ namespace AT_C_Sharp.AT.Exercise12
             Console.WriteLine("3 - Sair");
             Console.Write("Escolha uma opção: ");
         }
-        private static void CadastrarContato()
+
+        private static void RegisterContact()
         {
             Console.Write("Digite o nome: ");
-            string? nome = Console.ReadLine();
-            if (string.IsNullOrEmpty(nome))
+            string? name = Console.ReadLine();
+            if (string.IsNullOrEmpty(name))
             {
                 Console.WriteLine("Nome inválido!");
                 return;
             }
 
             Console.Write("Digite o telefone (ex.: (21) 99999-9999): ");
-            string? telefone = Console.ReadLine();
-            if (string.IsNullOrEmpty(telefone))
+            string? phone = Console.ReadLine();
+            if (string.IsNullOrEmpty(phone))
             {
                 Console.WriteLine("Telefone inválido!");
                 return;
@@ -138,13 +139,13 @@ namespace AT_C_Sharp.AT.Exercise12
                 return;
             }
 
-            Contato contato = new Contato(nome, telefone, email);
+            Contact contact = new Contact(name, phone, email);
 
             try
             {
                 using (StreamWriter sw = File.AppendText(FilePath))
                 {
-                    sw.WriteLine(contato.ToFileFormat());
+                    sw.WriteLine(contact.ToFileFormat());
                 }
                 Console.WriteLine("Contato cadastrado com sucesso!");
             }
@@ -154,10 +155,10 @@ namespace AT_C_Sharp.AT.Exercise12
             }
         }
 
-        private static void ListarContatos()
+        private static void ListContacts()
         {
-            List<Contato> contatos = LerContatosDoArquivo();
-            if (contatos.Count == 0)
+            List<Contact> contacts = ReadContactsFromFile();
+            if (contacts.Count == 0)
             {
                 Console.WriteLine("Nenhum contato cadastrado.");
                 return;
@@ -168,12 +169,12 @@ namespace AT_C_Sharp.AT.Exercise12
             Console.WriteLine("2 - Tabela");
             Console.WriteLine("3 - Texto Puro");
             Console.Write("Digite a opção (1-3): ");
-            string? formato = Console.ReadLine();
+            string? format = Console.ReadLine();
 
-            ContatoFormatter formatter = formato switch
+            ContactFormatter formatter = format switch
             {
                 "1" => new MarkdownFormatter(),
-                "2" => new TabelaFormatter(),
+                "2" => new TableFormatter(),
                 "3" => new RawTextFormatter(),
                 _ => null
             };
@@ -184,31 +185,31 @@ namespace AT_C_Sharp.AT.Exercise12
                 formatter = new RawTextFormatter();
             }
 
-            formatter.ExibirContatos(contatos);
+            formatter.DisplayContacts(contacts);
         }
 
-        private static List<Contato> LerContatosDoArquivo()
+        private static List<Contact> ReadContactsFromFile()
         {
-            List<Contato> contatos = new List<Contato>();
+            List<Contact> contacts = new List<Contact>();
 
             if (!File.Exists(FilePath))
             {
-                return contatos; 
+                return contacts;
             }
 
             try
             {
-                string[] linhas = File.ReadAllLines(FilePath);
-                foreach (string linha in linhas)
+                string[] lines = File.ReadAllLines(FilePath);
+                foreach (string line in lines)
                 {
-                    string[] partes = linha.Split(',');
-                    if (partes.Length == 3)
+                    string[] parts = line.Split(',');
+                    if (parts.Length == 3)
                     {
-                        contatos.Add(new Contato(partes[0], partes[1], partes[2]));
+                        contacts.Add(new Contact(parts[0], parts[1], parts[2]));
                     }
                     else
                     {
-                        Console.WriteLine($"Erro ao ler linha: {linha} (formato inválido)");
+                        Console.WriteLine($"Erro ao ler linha: {line} (formato inválido)");
                     }
                 }
             }
@@ -217,7 +218,7 @@ namespace AT_C_Sharp.AT.Exercise12
                 Console.WriteLine($"Erro ao ler o arquivo: {ex.Message}");
             }
 
-            return contatos;
+            return contacts;
         }
     }
 }

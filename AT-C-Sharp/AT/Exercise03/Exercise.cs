@@ -10,7 +10,7 @@ namespace AT_C_Sharp.AT.Exercise03
     {
         public static void Run()
         {
-            // Os comentários foram requisitados na questãp. Portanto farei alguns comentários.
+            // Os comentários foram requisitados na questão. Portanto farei alguns comentários.
 
             // Executa a calculadora.
             Console.WriteLine("Escolha a Operação Matemática: " +

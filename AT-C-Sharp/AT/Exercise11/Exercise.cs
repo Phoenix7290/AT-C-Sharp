@@ -9,10 +9,11 @@ namespace AT_C_Sharp.AT.Exercise11
 {
     internal class Exercise
     {
-        private const string ArquivoContatos = "contatos.txt";
+        private const string ContactFile = "contatos.txt";
 
         public static void Run()
         {
+            while (true)
             while (true)
             {
                 Console.Clear();
@@ -21,14 +22,14 @@ namespace AT_C_Sharp.AT.Exercise11
                 Console.WriteLine("2 - Listar contatos cadastrados");
                 Console.WriteLine("3 - Sair");
                 Console.Write("Escolha uma opção: ");
-                string opcao = Console.ReadLine();
-                switch (opcao)
+                string option = Console.ReadLine();
+                switch (option)
                 {
                     case "1":
-                        AdicionarContato();
+                        AddContact();
                         break;
                     case "2":
-                        ListarContatos();
+                        ListContacts();
                         break;
                     case "3":
                         Console.WriteLine("Encerrando programa...");
@@ -41,26 +42,27 @@ namespace AT_C_Sharp.AT.Exercise11
             }
         }
 
-        static void AdicionarContato()
+        static void AddContact()
         {
             Console.Clear();
             Console.Write("Nome: ");
-            string nome = Console.ReadLine();
+            string name = Console.ReadLine();
 
             Console.Write("Telefone: ");
-            string telefone = Console.ReadLine();
+            string phone = Console.ReadLine();
 
             Console.Write("Email: ");
             string email = Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(nome) || string.IsNullOrWhiteSpace(telefone) || string.IsNullOrWhiteSpace(email))
+
+            if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(phone) || string.IsNullOrWhiteSpace(email))
             {
                 Console.WriteLine("Erro: Nenhum campo pode estar vazio!");
             }
             else
             {
-                using (StreamWriter sw = new StreamWriter(ArquivoContatos, true))
+                using (StreamWriter sw = new StreamWriter(ContactFile, true))
                 {
-                    sw.WriteLine($"{nome},{telefone},{email}");
+                    sw.WriteLine($"{name},{phone},{email}");
                 }
                 Console.WriteLine("Contato cadastrado com sucesso!");
             }
@@ -68,25 +70,25 @@ namespace AT_C_Sharp.AT.Exercise11
             Console.ReadKey();
         }
 
-        static void ListarContatos()
+        static void ListContacts()
         {
             Console.Clear();
             Console.WriteLine("=== Contatos Cadastrados ===");
-            if (!File.Exists(ArquivoContatos) || new FileInfo(ArquivoContatos).Length == 0)
+            if (!File.Exists(ContactFile) || new FileInfo(ContactFile).Length == 0)
             {
                 Console.WriteLine("Nenhum contato cadastrado.");
             }
             else
             {
-                using (StreamReader sr = new StreamReader(ArquivoContatos))
+                using (StreamReader sr = new StreamReader(ContactFile))
                 {
-                    string linha;
-                    while ((linha = sr.ReadLine()) != null)
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
                     {
-                        string[] dados = linha.Split(',');
-                        if (dados.Length == 3)
+                        string[] data = line.Split(',');
+                        if (data.Length == 3)
                         {
-                            Console.WriteLine($"Nome: {dados[0]} | Telefone: {dados[1]} | Email: {dados[2]}");
+                            Console.WriteLine($"Nome: {data[0]} | Telefone: {data[1]} | Email: {data[2]}");
                         }
                     }
                 }

@@ -12,12 +12,12 @@ namespace AT_C_Sharp.AT.Exercise05
         {
             DateTime graduationDate = new DateTime(2026, 12, 15);
 
-            Console.Write("Digite a data atual (dd/MM/yyyy): ");
+            Console.Write("Digite a data atual (dia/mês/ano): ");
             string? input = Console.ReadLine();
 
             if (string.IsNullOrEmpty(input))
             {
-                Console.WriteLine("Erro: Data inválida. Insira uma data no formato dd/MM/yyyy.");
+                Console.WriteLine("Erro: Data inválida. Insira uma data no formato dia/mês/ano.");
                 return;
             }
 

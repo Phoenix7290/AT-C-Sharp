@@ -8,50 +8,50 @@ using System.Globalization;
 
 namespace AT_C_Sharp.AT.Exercise09
 {
-    public class Produto
+    public class Product
     {
-        public string Nome { get; set; }
-        public int Quantidade { get; set; }
-        public decimal PrecoUnitario { get; set; }
+        public string Name { get; set; }
+        public int Quantity { get; set; }
+        public decimal UnitPrice { get; set; }
 
-        public Produto(string nome, int quantidade, decimal precoUnitario)
+        public Product(string name, int quantity, decimal unitPrice)
         {
-            Nome = nome;
-            Quantidade = quantidade;
-            PrecoUnitario = precoUnitario;
+            Name = name;
+            Quantity = quantity;
+            UnitPrice = unitPrice;
         }
 
         public override string ToString()
         {
-            return $"Produto: {Nome} | Quantidade: {Quantidade} | Preço: R$ {PrecoUnitario:F2}";
+            return $"Produto: {Name} | Quantidade: {Quantity} | Preço: R$ {UnitPrice:F2}";
         }
 
         public string ToFileFormat()
         {
-            return $"{Nome},{Quantidade},{PrecoUnitario.ToString(CultureInfo.InvariantCulture)}";
+            return $"{Name},{Quantity},{UnitPrice.ToString(CultureInfo.InvariantCulture)}";
         }
     }
 
     public class Exercise
     {
         private const string FilePath = "estoque.txt";
-        private static Produto[] produtosArray = new Produto[5];
-        private static int produtoCount = 0;
+        private static Product[] productsArray = new Product[5];
+        private static int productCount = 0;
 
         public static void Run()
         {
             while (true)
             {
-                ExibirMenu();
-                string? opcao = Console.ReadLine();
+                DisplayMenu();
+                string? option = Console.ReadLine();
 
-                switch (opcao)
+                switch (option)
                 {
                     case "1":
-                        InserirProduto();
+                        AddProduct();
                         break;
                     case "2":
-                        ListarProdutos();
+                        ListProducts();
                         break;
                     case "3":
                         Console.WriteLine("Encerrando o programa...");
@@ -64,7 +64,7 @@ namespace AT_C_Sharp.AT.Exercise09
             }
         }
 
-        private static void ExibirMenu()
+        private static void DisplayMenu()
         {
             Console.WriteLine("=== Sistema de Controle de Estoque ===");
             Console.WriteLine("1 - Inserir Produto");
@@ -73,48 +73,48 @@ namespace AT_C_Sharp.AT.Exercise09
             Console.Write("Escolha uma opção: ");
         }
 
-        private static void InserirProduto()
+        private static void AddProduct()
         {
-            if (produtoCount >= 5)
+            if (productCount >= 5)
             {
                 Console.WriteLine("Limite de produtos atingido!");
                 return;
             }
 
             Console.Write("Digite o nome do produto: ");
-            string? nome = Console.ReadLine();
-            if (string.IsNullOrEmpty(nome))
+            string? name = Console.ReadLine();
+            if (string.IsNullOrEmpty(name))
             {
                 Console.WriteLine("Nome inválido!");
                 return;
             }
 
             Console.Write("Digite a quantidade em estoque: ");
-            if (!int.TryParse(Console.ReadLine(), out int quantidade) || quantidade < 0)
+            if (!int.TryParse(Console.ReadLine(), out int quantity) || quantity < 0)
             {
                 Console.WriteLine("Quantidade inválida! Deve ser um número inteiro positivo.");
                 return;
             }
 
             Console.Write("Digite o preço unitário (ex.: 4500,00): ");
-            string? precoInput = Console.ReadLine();
-            decimal preco;
+            string? priceInput = Console.ReadLine();
+            decimal price;
 
-            if (!decimal.TryParse(precoInput, NumberStyles.Any, CultureInfo.CurrentCulture, out preco) &&
-                !decimal.TryParse(precoInput, NumberStyles.Any, CultureInfo.InvariantCulture, out preco) ||
-                preco < 0)
+            if (!decimal.TryParse(priceInput, NumberStyles.Any, CultureInfo.CurrentCulture, out price) &&
+                !decimal.TryParse(priceInput, NumberStyles.Any, CultureInfo.InvariantCulture, out price) ||
+                price < 0)
             {
                 Console.WriteLine("Preço inválido! Deve ser um valor positivo.");
                 return;
             }
 
-            Produto produto = new Produto(nome, quantidade, preco);
+            Product product = new Product(name, quantity, price);
 
             try
             {
                 using (StreamWriter sw = File.AppendText(FilePath))
                 {
-                    sw.WriteLine(produto.ToFileFormat());
+                    sw.WriteLine(product.ToFileFormat());
                 }
                 Console.WriteLine("Produto inserido com sucesso!");
             }
@@ -124,7 +124,7 @@ namespace AT_C_Sharp.AT.Exercise09
             }
         }
 
-        private static void ListarProdutos()
+        private static void ListProducts()
         {
             if (!File.Exists(FilePath))
             {
@@ -134,32 +134,32 @@ namespace AT_C_Sharp.AT.Exercise09
 
             try
             {
-                string[] linhas = File.ReadAllLines(FilePath);
-                if (linhas.Length == 0)
+                string[] lines = File.ReadAllLines(FilePath);
+                if (lines.Length == 0)
                 {
                     Console.WriteLine("Nenhum produto cadastrado.");
                     return;
                 }
 
-                foreach (string linha in linhas)
+                foreach (string line in lines)
                 {
-                    string[] partes = linha.Split(',');
-                    if (partes.Length == 3 &&
-                        int.TryParse(partes[1], out int quantidade))
+                    string[] parts = line.Split(',');
+                    if (parts.Length == 3 &&
+                        int.TryParse(parts[1], out int quantity))
                     {
-                        if (decimal.TryParse(partes[2], NumberStyles.Any, CultureInfo.InvariantCulture, out decimal preco))
+                        if (decimal.TryParse(parts[2], NumberStyles.Any, CultureInfo.InvariantCulture, out decimal price))
                         {
-                            Produto produto = new Produto(partes[0], quantidade, preco);
-                            Console.WriteLine(produto.ToString());
+                            Product product = new Product(parts[0], quantity, price);
+                            Console.WriteLine(product.ToString());
                         }
                         else
                         {
-                            Console.WriteLine($"Erro ao ler linha: {linha} (formato de preço inválido)");
+                            Console.WriteLine($"Erro ao ler linha: {line} (formato de preço inválido)");
                         }
                     }
                     else
                     {
-                        Console.WriteLine($"Erro ao ler linha: {linha} (formato inválido)");
+                        Console.WriteLine($"Erro ao ler linha: {line} (formato inválido)");
                     }
                 }
             }
