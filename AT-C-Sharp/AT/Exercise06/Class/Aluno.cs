@@ -36,19 +36,4 @@ namespace AT_C_Sharp.AT.Exercise06.Class
             return MediaNotas >= 7 ? "Aprovado" : "Reprovado";
         }
     }
-
-    public class Exercise
-    {
-        public static void Run()
-        {
-            Aluno aluno = new Aluno(
-                nome: "Marcos Ryan",
-                matricula: "2023001234",
-                curso: "Engenharia de Software",
-                mediaNotas: 8.5
-            );
-
-            aluno.ExibirDados();
-        }
-    }
 }

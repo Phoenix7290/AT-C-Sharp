@@ -11,13 +11,13 @@ namespace AT_C_Sharp.AT.Exercise08
     {
         public static void Run()
         {
-            Funcionario funcionario = new Funcionario("Carlos Silva", "Desenvolvedor", 3000.00m);
+            Funcionario funcionario = new Funcionario("Carlos Silva", "Desenvolvedor", 7000.00m);
             Console.WriteLine("Dados do Funcionário:");
             funcionario.ExibirDados();
 
             Console.WriteLine("\n-----------------------------\n");
 
-            Gerente gerente = new Gerente("Ana Souza", 5000.00m);
+            Gerente gerente = new Gerente("Ana Souza", 10000.00m);
             Console.WriteLine("Dados do Gerente:");
             gerente.ExibirDados();
         }

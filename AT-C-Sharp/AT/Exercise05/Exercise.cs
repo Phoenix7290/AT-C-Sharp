@@ -10,7 +10,7 @@ namespace AT_C_Sharp.AT.Exercise05
     {
         public static void Run()
         {
-            DateTime graduationDate = new DateTime(2027, 12, 15);
+            DateTime graduationDate = new DateTime(2027, 12, 31);
 
             Console.Write("Digite a data atual (dia/mês/ano): ");
             string? input = Console.ReadLine();
@@ -36,9 +36,9 @@ namespace AT_C_Sharp.AT.Exercise05
                     Console.WriteLine("Parabéns! Você já deveria estar formado!");
                     return;
                 }
-                
+
                 int years = graduationDate.Year - currentDate.Year;
-                int months = graduationDate.Month - currentDate.Month + (years * 12);
+                int months = graduationDate.Month - currentDate.Month;
                 int days = graduationDate.Day - currentDate.Day;
 
                 if (days < 0)
@@ -46,10 +46,17 @@ namespace AT_C_Sharp.AT.Exercise05
                     months--;
                     days += DateTime.DaysInMonth(currentDate.Year, currentDate.Month);
                 }
+
                 if (months < 0)
                 {
                     years--;
                     months += 12;
+                }
+
+                if (months >= 12)
+                {
+                    years += months / 12;
+                    months %= 12;
                 }
 
                 years = Math.Max(0, years);

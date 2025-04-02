@@ -23,7 +23,7 @@ namespace AT_C_Sharp.AT.Exercise09
 
         public override string ToString()
         {
-            return $"Produto: {Name} | Quantidade: {Quantity} | Preço: R$ {UnitPrice:F2}";
+            return $"Produto: {Name} | Quantidade: {Quantity} | Preço: R$ {UnitPrice.ToString("F2", CultureInfo.InvariantCulture)}";
         }
 
         public string ToFileFormat()
@@ -98,11 +98,7 @@ namespace AT_C_Sharp.AT.Exercise09
 
             Console.Write("Digite o preço unitário (ex.: 4500,00): ");
             string? priceInput = Console.ReadLine();
-            decimal price;
-
-            if (!decimal.TryParse(priceInput, NumberStyles.Any, CultureInfo.CurrentCulture, out price) &&
-                !decimal.TryParse(priceInput, NumberStyles.Any, CultureInfo.InvariantCulture, out price) ||
-                price < 0)
+            if (!decimal.TryParse(priceInput, NumberStyles.Any, CultureInfo.CurrentCulture, out decimal price) || price < 0)
             {
                 Console.WriteLine("Preço inválido! Deve ser um valor positivo.");
                 return;
@@ -144,18 +140,11 @@ namespace AT_C_Sharp.AT.Exercise09
                 foreach (string line in lines)
                 {
                     string[] parts = line.Split(',');
-                    if (parts.Length == 3 &&
-                        int.TryParse(parts[1], out int quantity))
+                    if (parts.Length == 3 && int.TryParse(parts[1], out int quantity) &&
+                        decimal.TryParse(parts[2], NumberStyles.Any, CultureInfo.InvariantCulture, out decimal price))
                     {
-                        if (decimal.TryParse(parts[2], NumberStyles.Any, CultureInfo.InvariantCulture, out decimal price))
-                        {
-                            Product product = new Product(parts[0], quantity, price);
-                            Console.WriteLine(product.ToString());
-                        }
-                        else
-                        {
-                            Console.WriteLine($"Erro ao ler linha: {line} (formato de preço inválido)");
-                        }
+                        Product product = new Product(parts[0], quantity, price);
+                        Console.WriteLine(product.ToString());
                     }
                     else
                     {
