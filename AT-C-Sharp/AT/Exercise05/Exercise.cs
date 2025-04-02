@@ -10,7 +10,7 @@ namespace AT_C_Sharp.AT.Exercise05
     {
         public static void Run()
         {
-            DateTime graduationDate = new DateTime(2026, 12, 15);
+            DateTime graduationDate = new DateTime(2027, 12, 15);
 
             Console.Write("Digite a data atual (dia/mês/ano): ");
             string? input = Console.ReadLine();
